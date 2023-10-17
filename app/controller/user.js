@@ -1,7 +1,7 @@
 /*
  * @Author: Heyong
  * @Date: 2023-10-17 09:22:08
- * @LastEditTime: 2023-10-17 14:43:39
+ * @LastEditTime: 2023-10-17 17:31:11
  */
 const controller = require('egg').Controller;
 const moment = require('moment');
@@ -112,8 +112,35 @@ class UserController extends controller {
 
     async getUserInfo() {
         const { ctx, app } = this;
-        // const 
-        const userInfo = await ctx.service.user.getUserInfo()
+        const token = ctx.request.header.authorization
+        const decode = await app.jwt.verify(token, app.config.jwt.secret);
+        const userInfo = await ctx.service.user.getUserByName(decode.userName)
+        ctx.body = {
+            code: 200,
+            msg: '获取用户信息成功',
+            data: userInfo
+        }
+    }
+
+    async editUserInfo() {
+        const { ctx, app } = this
+        try {
+            const token = ctx.request.header.authorization
+            const decode = await app.jwt.verify(token, app.config.jwt.secret);
+            if (!decode) return
+            const userInfo = await ctx.service.user.getUserByName(decode.userName)
+            const result = await ctx.service.user.editUserInfoByName({
+                ...userInfo,
+                ...ctx.request.body
+            })
+            ctx.body = {
+                code: 200,
+                msg: '修改用户信息成功',
+                data: null
+            }
+        } catch (error) {
+            console.log(error);
+        }
     }
 }
 module.exports = UserController;

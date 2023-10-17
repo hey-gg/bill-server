@@ -1,7 +1,7 @@
 /*
  * @Author: Heyong
  * @Date: 2023-10-09 17:37:15
- * @LastEditTime: 2023-10-17 14:01:20
+ * @LastEditTime: 2023-10-17 17:08:54
  */
 'use strict';
 
@@ -14,4 +14,6 @@ module.exports = app => {
   router.post('/api/user/register', controller.user.register)
   router.post('/api/user/login', controller.user.login)
   router.get('/api/user/testToken', _jwt, controller.user.test)  //  放入第二个参数，作为中间件过滤项
+  router.get('/api/user/getUserInfo', _jwt, controller.user.getUserInfo)
+  router.post('/api/user/editUserInfo', _jwt, controller.user.editUserInfo)
 };
