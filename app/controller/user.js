@@ -1,7 +1,7 @@
 /*
  * @Author: Heyong
  * @Date: 2023-10-17 09:22:08
- * @LastEditTime: 2023-10-17 17:31:11
+ * @LastEditTime: 2023-10-18 10:19:17
  */
 const controller = require('egg').Controller;
 const moment = require('moment');
@@ -125,14 +125,17 @@ class UserController extends controller {
     async editUserInfo() {
         const { ctx, app } = this
         try {
+            let user_id
             const token = ctx.request.header.authorization
             const decode = await app.jwt.verify(token, app.config.jwt.secret);
             if (!decode) return
+            user_id = decode.id
             const userInfo = await ctx.service.user.getUserByName(decode.userName)
             const result = await ctx.service.user.editUserInfoByName({
                 ...userInfo,
                 ...ctx.request.body
             })
+            if (!result) return ;
             ctx.body = {
                 code: 200,
                 msg: '修改用户信息成功',

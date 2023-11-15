@@ -1,7 +1,7 @@
 /*
  * @Author: Heyong
  * @Date: 2023-10-09 17:37:15
- * @LastEditTime: 2023-10-17 11:14:51
+ * @LastEditTime: 2023-10-18 14:04:14
  */
 /*
  * @Author: Heyong
@@ -32,7 +32,7 @@ module.exports = appInfo => {
   config.cluster = {
     listen: {
       path: '',
-      port: 7002,
+      port: 7003,
       hostName: '127.0.0.1'
     }
   }
@@ -48,7 +48,8 @@ module.exports = appInfo => {
 
   // 允许跨域的方法
   config.cors = {
-    origin: '*',
+    origin: '*',    // 允许所有跨域访问
+    credentials: true,  // 允许开宇
     allowMethods: 'GET,HEAD,PUT,POST,DELETE,PATCH'
   }
 
@@ -57,9 +58,14 @@ module.exports = appInfo => {
     mapping: { '.html': 'ejs' }
   }
 
+  config.multipart = {
+    mode: 'file'
+  }
+
   // add your user config here
   const userConfig = {
     // myAppName: 'egg',
+    uploadDir: 'app/public/upload',
   };
 
   config.jwt = {

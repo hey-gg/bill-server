@@ -1,3 +1,8 @@
+/*
+ * @Author: Heyong
+ * @Date: 2023-10-17 09:27:10
+ * @LastEditTime: 2023-10-18 10:28:32
+ */
 'use strict'
 
 const Service = require('egg').Service;
@@ -30,7 +35,9 @@ class UserService extends Service {
     async editUserInfoByName(params) {
         const { app } = this
         try {
-            const result = await app.mysql.update('user', params)
+            const result = await app.mysql.update('user', {
+                ...params
+            })
             return result
         } catch (e) {
             console.log(e);
